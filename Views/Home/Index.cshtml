@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+
+<head>
+    <!-- Load Fontawesome for Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Load Custom CSS -->
+    <link rel="stylesheet" href="~/css/index.css" />
+</head>
+
+<div class="index-container">
+    <img src="/img/cover.png" alt="PetHouse Logo" />
+    <h1 class="display-4">🐾 Welcome to Paws! 🐾</h1>
+    <p>
+        A famous Pet House of Quezon City
+    </p>
+    <div class="btn-container">
+        <div>
+            <a class="nav-link text-light" title="Add New Pet" aria-label="Add New Pet" asp-area="" asp-controller="Animal" asp-action="Create">
+                <i class="fa-solid fa-plus"></i> Add
+            </a>
+        </div>
+        <div>
+            <a class="nav-link text-light" title="View Records" aria-label="View Records" asp-area="" asp-controller="Animal" asp-action="Read">
+                <i class="fa-solid fa-eye"></i> Records
+            </a>
+        </div>
+    </div>
+</div>
+

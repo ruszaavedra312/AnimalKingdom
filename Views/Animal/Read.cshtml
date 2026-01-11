@@ -1,0 +1,71 @@
+﻿@model List<CRUD_Test.AnimalKindom.Models.Entities.Animal>
+
+<div>
+    <h1 class=" fs-2">
+        Records
+        <i class="fa-solid fa-server"></i>
+    </h1>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" data-message="@TempData["SuccessMessage"]"></div>
+}
+
+@if (Model == null || !Model.Any())
+{
+    <div class="d-flex flex-column justify-content-center align-items-center vh-100 text-center">
+        <img src="/img/empty-box.png" alt="Empty Records" class="w-5" />
+        <p>No Pet Yet! Be the first to add.</p>
+        <div class="d-flex gap-1 justify-content-center">
+            <a class="btn btn-primary" asp-controller="Animal" asp-action="Create">New</a>
+            <a class="btn btn-outline-success" asp-controller="Home" asp-action="Index">Not Now</a>
+        </div>
+    </div>
+}
+
+else
+{
+    <!-- Search Box -->
+    <div class="d-flex align-items-center gap-2 mt-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by name, species, caretaker..." />
+        <a class="btn btn-primary col-1 gap-1" asp-controller="Animal" asp-action="Create"><i class="fa-solid fa-plus"></i> New</a>
+    </div>
+
+
+    <table class="table" id="animalTable">
+        <thead>
+            <tr>
+                <th>Pet Name</th>
+                <th>Age</th>
+                <th>Species</th>
+                <th>Care Taker</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- A loop for each data record -->
+            @foreach (var Animal in Model)
+            {
+                <tr>
+                    <td class="name">@Animal.Name</td>
+                    <td class="age">@Animal.Age</td>
+                    <td class="species">@Animal.Species</td>
+                    <td class="caretaker">@Animal.CareTaker</td>
+                    <td>
+                        <a class="btn text-primary" asp-controller="Animal" asp-action="Update" asp-route-id="@Animal.Id">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form id="deleteForm-@Animal.Id" asp-controller="Animal" asp-action="Delete" asp-route-id="@Animal.Id" method="post" style="display:inline;">
+                            <button type="button" class="btn text-danger ms-3" onclick="confirmDelete('@Animal.Id')">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </form>
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}

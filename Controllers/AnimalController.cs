@@ -1,0 +1,106 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using CRUD_Test.AnimalKindom.Models;
+using CRUD_Test.AnimalKindom.Data;
+using CRUD_Test.AnimalKindom.Models.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace CRUD_Test.AnimalKindom.Controllers
+{
+    public class AnimalController : Controller
+    {
+        private readonly AppDbContext dbcontext; // Inject database context
+
+        public AnimalController(AppDbContext context)
+        {
+            dbcontext = context;
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        
+        // For Create or Inserting Data 
+        [HttpPost]
+        public async Task<IActionResult> Create(AddViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var newAnimal = new Animal
+            {
+                Name = viewModel.Name,
+                Age = viewModel.Age,
+                Species = viewModel.Species,
+                CareTaker = viewModel.CareTaker
+            };
+
+            await dbcontext.Animals.AddAsync(newAnimal);
+            await dbcontext.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Added successfully!";
+
+            return RedirectToAction("Read", "Animal");
+        }
+
+
+        // For Read or Retrieving Data 
+        [HttpGet]
+        public async Task <IActionResult> Read()
+        {
+            var animals = await dbcontext.Animals.ToListAsync();
+
+            return View(animals);
+        }
+
+
+        // For Update or Editing Data 
+        [HttpGet]
+        public async Task <IActionResult> Update(Guid id)
+        {
+            var updateAnimal = await dbcontext.Animals.FindAsync(id);
+
+            return View(updateAnimal);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(Animal Model)
+        {
+            var editAnimal = await dbcontext.Animals.FindAsync(Model.Id);
+
+            if (editAnimal is not null)
+            {
+                editAnimal.Name = Model.Name;
+                editAnimal.Age = Model.Age;
+                editAnimal.Species = Model.Species;
+                editAnimal.CareTaker = Model.CareTaker;
+                editAnimal.DateAdded = Model.DateAdded;
+
+                await dbcontext.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Updated!";
+            }
+
+            return RedirectToAction("Read", "Animal");
+        }
+
+        // For Delete or Deleting Data 
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var delAnimal = await dbcontext.Animals.FindAsync(id);
+
+            if (delAnimal is not null)
+            {
+                dbcontext.Animals.Remove(delAnimal);
+                await dbcontext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Read", "Animal");
+        }
+
+    }
+}
