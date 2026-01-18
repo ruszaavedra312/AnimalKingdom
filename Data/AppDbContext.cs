@@ -11,6 +11,6 @@ namespace CRUD_Test.AnimalKindom.Data
         }
 
         public DbSet<Animal> Animals { get; set; }
-        //public DbSet<AnimalSpecies> AnimalSpecies { get; set; }
+        public DbSet<AnimalSpecies> AnimalSpecies { get; set; } 
     }
 }

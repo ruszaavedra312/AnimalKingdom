@@ -3,6 +3,7 @@ using CRUD_Test.AnimalKindom.Models;
 using CRUD_Test.AnimalKindom.Data;
 using CRUD_Test.AnimalKindom.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CRUD_Test.AnimalKindom.Controllers
 {
@@ -16,10 +17,27 @@ namespace CRUD_Test.AnimalKindom.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        // public IActionResult Create()
+        // {
+        //     return View();
+        // }
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var viewModel = new AddViewModel
+            {
+                SpeciesList = await dbcontext.AnimalSpecies
+                    .Select(s => new SelectListItem
+                    {
+                        Value = s.SpeciesName,
+                        Text = s.SpeciesName
+                    })
+                    .ToListAsync()
+            };
+
+            return View(viewModel);
         }
+
         
         // For Create or Inserting Data 
         [HttpPost]
@@ -27,6 +45,14 @@ namespace CRUD_Test.AnimalKindom.Controllers
         {
             if (!ModelState.IsValid)
             {
+                viewModel.SpeciesList = await dbcontext.AnimalSpecies
+                    .Select(s => new SelectListItem
+                    {
+                        Value = s.SpeciesName,
+                        Text = s.SpeciesName
+                    })
+                    .ToListAsync();
+
                 return View(viewModel);
             }
 
@@ -45,8 +71,9 @@ namespace CRUD_Test.AnimalKindom.Controllers
 
             TempData["SuccessMessage"] = "Added successfully!";
 
-            return RedirectToAction("Read", "Animal");
+            return RedirectToAction("Read");
         }
+
 
 
         // For Read or Retrieving Data 
@@ -60,36 +87,81 @@ namespace CRUD_Test.AnimalKindom.Controllers
 
 
         // For Update or Editing Data 
-        [HttpGet]
-        public async Task <IActionResult> Update(Guid id)
-        {
-            var updateAnimal = await dbcontext.Animals.FindAsync(id);
+        // [HttpGet]
+        // public async Task <IActionResult> Update(Guid id)
+        // {
+        //     var updateAnimal = await dbcontext.Animals.FindAsync(id);
 
-            return View(updateAnimal);
+        //     return View(updateAnimal);
+        // }
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid id)
+        {
+            var animal = await dbcontext.Animals.FindAsync(id);
+
+            if (animal == null)
+                return NotFound();
+
+            var viewModel = new UpdateAnimalViewModel
+            {
+                Id = animal.Id,
+                Name = animal.Name,
+                Age = animal.Age,
+                Species = animal.Species,
+                CareTaker = animal.CareTaker,
+                OriginatedPlace = animal.OriginatedPlace,
+                OriginalOwner = animal.OriginalOwner,
+                DateAdded = animal.DateAdded,
+                SpeciesList = await dbcontext.AnimalSpecies
+                    .OrderBy(s => s.SpeciesName)
+                    .Select(s => new SelectListItem
+                    {
+                        Value = s.SpeciesName,
+                        Text = s.SpeciesName
+                    })
+                    .ToListAsync()
+            };
+
+            return View(viewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update(Animal Model)
-        {
-            var editAnimal = await dbcontext.Animals.FindAsync(Model.Id);
 
-            if (editAnimal is not null)
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateAnimalViewModel model)
+        {
+            if (!ModelState.IsValid)
             {
-                editAnimal.Name = Model.Name;
-                editAnimal.Age = Model.Age;
-                editAnimal.Species = Model.Species;
-                editAnimal.CareTaker = Model.CareTaker;
-                editAnimal.DateAdded = Model.DateAdded;
-                editAnimal.OriginatedPlace = Model.OriginatedPlace;
-                editAnimal.OriginalOwner = Model.OriginalOwner;
+                // Reload SpeciesList if validation fails
+                model.SpeciesList = await dbcontext.AnimalSpecies
+                    .OrderBy(s => s.SpeciesName)
+                    .Select(s => new SelectListItem
+                    {
+                        Value = s.SpeciesName,
+                        Text = s.SpeciesName
+                    })
+                    .ToListAsync();
+
+                return View(model);
+            }
+
+            var animal = await dbcontext.Animals.FindAsync(model.Id);
+
+            if (animal != null)
+            {
+                animal.Name = model.Name;
+                animal.Age = model.Age;
+                animal.Species = model.Species;
+                animal.CareTaker = model.CareTaker;
+                animal.OriginatedPlace = model.OriginatedPlace;
+                animal.OriginalOwner = model.OriginalOwner;
 
                 await dbcontext.SaveChangesAsync();
-
                 TempData["SuccessMessage"] = "Updated!";
             }
 
-            return RedirectToAction("Read", "Animal");
+            return RedirectToAction("Read");
         }
+
 
         // For Delete or Deleting Data 
         [HttpPost]

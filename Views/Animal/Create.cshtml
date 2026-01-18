@@ -37,15 +37,12 @@
     <div class="row g-3">
         <div class="col-md-6 col-12">
             <label class="form-label">Species</label>
-            <select class="form-control" asp-for="Species" required>
-                <option value="" disabled selected>Select a species</option>
-                <option value="Dog">Dog</option>
-                <option value="Cat">Cat</option>
-                <option value="Bird">Bird</option>
-                <option value="Fish">Fish</option>
-                <option value="Other">Other</option>
+            <select class="form-control" asp-for="Species" asp-items="Model.SpeciesList">
+                <option value="">Select a species</option>
             </select>
+            <span asp-validation-for="Species" class="text-danger"></span>
         </div>
+
         <div class="col-md-6 col-12">
             <label class="form-label">Care Taker</label>
             <input type="text" class="form-control" asp-for="CareTaker" required />

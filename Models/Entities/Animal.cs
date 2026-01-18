@@ -11,10 +11,13 @@ namespace CRUD_Test.AnimalKindom.Models.Entities
         [MaxLength(100)]
         public string Name { get; set; }
         
+        [Required]
         public int Age { get; set; }
         
         [Required]
         public string Species { get; set; }
+
+        [Required]
         public string CareTaker { get; set; }
 
         [Required]

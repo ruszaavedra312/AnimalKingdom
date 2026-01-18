@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+ 	font-family:sans-serif;
+}
+
 /* Define color variables */
 :root {
     --primary-color: #f5f5f5;
@@ -79,6 +83,7 @@
 .w-5 {
     width: 200px !important;
 }
+
 
 /* 🔹 Media Query for Small Screens */
 @media (max-width: 768px) {

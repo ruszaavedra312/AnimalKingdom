@@ -33,52 +33,54 @@ else
     </div>
 
 
-    <table class="table" id="animalTable">
-        <thead>
-            <tr>
-                <th>Pet Name</th>
-                <th>Age</th>
-                <th>Species</th>
-                <th>Care Taker</th>
-                <th>Originated</th>
-                <th>Original Owner</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- A loop for each data record -->
-            @foreach (var Animal in Model)
-            {
+    <div class="Table_Container">
+        <table class="table" id="animalTable">
+            <thead>
                 <tr>
-                    <td class="name">@Animal.Name</td>
-                    <td class="age">@Animal.Age</td>
-                    <td class="species">@Animal.Species</td>
-                    <td class="caretaker">@Animal.CareTaker</td>
-                    <td class="originated">
-                        @if (!string.IsNullOrEmpty(Animal.OriginatedPlace))
-                        {
-                            @Animal.OriginatedPlace
-                        }
-                        else
-                        {
-                            <text>Unkown</text>
-                        }
-                    </td>
-                    <td class="owner">@Animal.OriginalOwner</td>
-                    <td>
-                        <a class="btn text-primary" asp-controller="Animal" asp-action="Update" asp-route-id="@Animal.Id">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
-                        <form id="deleteForm-@Animal.Id" asp-controller="Animal" asp-action="Delete" asp-route-id="@Animal.Id" method="post" style="display:inline;">
-                            <button type="button" class="btn text-danger ms-3" onclick="confirmDelete('@Animal.Id')">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>
-                        </form>
-                    </td>
-
-
+                    <th>Pet Name</th>
+                    <th>Age</th>
+                    <th>Species</th>
+                    <th>Care Taker</th>
+                    <th>Originated</th>
+                    <th>Original Owner</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <!-- A loop for each data record -->
+                @foreach (var Animal in Model)
+                {
+                    <tr>
+                        <td class="name">@Animal.Name</td>
+                        <td class="age">@Animal.Age</td>
+                        <td class="species">@Animal.Species</td>
+                        <td class="caretaker">@Animal.CareTaker</td>
+                        <td class="originated">
+                            @if (!string.IsNullOrEmpty(Animal.OriginatedPlace))
+                            {
+                                @Animal.OriginatedPlace
+                            }
+                            else
+                            {
+                                <text>Unkown</text>
+                            }
+                        </td>
+                        <td class="owner">@Animal.OriginalOwner</td>
+                        <td>
+                            <a class="btn text-primary" asp-controller="Animal" asp-action="Update" asp-route-id="@Animal.Id">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form id="deleteForm-@Animal.Id" asp-controller="Animal" asp-action="Delete" asp-route-id="@Animal.Id" method="post" style="display:inline;">
+                                <button type="button" class="btn text-danger ms-3" onclick="confirmDelete('@Animal.Id')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
