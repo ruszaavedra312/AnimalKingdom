@@ -35,7 +35,9 @@ namespace CRUD_Test.AnimalKindom.Controllers
                 Name = viewModel.Name,
                 Age = viewModel.Age,
                 Species = viewModel.Species,
-                CareTaker = viewModel.CareTaker
+                CareTaker = viewModel.CareTaker,
+                OriginatedPlace = viewModel.OriginatedPlace,
+                OriginalOwner = viewModel.OriginalOwner
             };
 
             await dbcontext.Animals.AddAsync(newAnimal);
@@ -78,6 +80,8 @@ namespace CRUD_Test.AnimalKindom.Controllers
                 editAnimal.Species = Model.Species;
                 editAnimal.CareTaker = Model.CareTaker;
                 editAnimal.DateAdded = Model.DateAdded;
+                editAnimal.OriginatedPlace = Model.OriginatedPlace;
+                editAnimal.OriginalOwner = Model.OriginalOwner;
 
                 await dbcontext.SaveChangesAsync();
 

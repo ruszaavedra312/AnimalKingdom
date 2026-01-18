@@ -19,5 +19,9 @@ namespace CRUD_Test.AnimalKindom.Models.Entities
 
         [Required]
         public DateTime DateAdded { get; set; } = DateTime.UtcNow;
+
+        public string? OriginatedPlace { get; set; }
+
+        public string? OriginalOwner { get; set; }
     }
 }

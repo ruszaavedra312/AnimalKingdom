@@ -13,5 +13,9 @@ namespace CRUD_Test.AnimalKindom.Models
         [Required]
         public string Species { get; set; }
         public string CareTaker { get; set; }
+
+        public string? OriginatedPlace { get; set; }
+
+        public string? OriginalOwner { get; set; }
     }
 }

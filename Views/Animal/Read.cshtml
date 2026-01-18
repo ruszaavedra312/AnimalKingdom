@@ -40,6 +40,8 @@ else
                 <th>Age</th>
                 <th>Species</th>
                 <th>Care Taker</th>
+                <th>Originated</th>
+                <th>Original Owner</th>
                 <th></th>
             </tr>
         </thead>
@@ -52,6 +54,17 @@ else
                     <td class="age">@Animal.Age</td>
                     <td class="species">@Animal.Species</td>
                     <td class="caretaker">@Animal.CareTaker</td>
+                    <td class="originated">
+                        @if (!string.IsNullOrEmpty(Animal.OriginatedPlace))
+                        {
+                            @Animal.OriginatedPlace
+                        }
+                        else
+                        {
+                            <text>Unkown</text>
+                        }
+                    </td>
+                    <td class="owner">@Animal.OriginalOwner</td>
                     <td>
                         <a class="btn text-primary" asp-controller="Animal" asp-action="Update" asp-route-id="@Animal.Id">
                             <i class="fas fa-edit"></i> Edit
