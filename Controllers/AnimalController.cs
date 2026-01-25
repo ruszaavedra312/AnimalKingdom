@@ -17,11 +17,6 @@ namespace CRUD_Test.AnimalKindom.Controllers
         }
 
         [HttpGet]
-        // public IActionResult Create()
-        // {
-        //     return View();
-        // }
-        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var viewModel = new AddViewModel
@@ -86,14 +81,6 @@ namespace CRUD_Test.AnimalKindom.Controllers
         }
 
 
-        // For Update or Editing Data 
-        // [HttpGet]
-        // public async Task <IActionResult> Update(Guid id)
-        // {
-        //     var updateAnimal = await dbcontext.Animals.FindAsync(id);
-
-        //     return View(updateAnimal);
-        // }
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
